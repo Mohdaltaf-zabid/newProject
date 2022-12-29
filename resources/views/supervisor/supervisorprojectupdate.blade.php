@@ -2,50 +2,48 @@
 <html lang="en">
 
 <head>
-    @include('admin.admincss')
-    <title>Update project</title>
+    @include('supervisor.supervisorcss')
+    <title>Update Project</title>
 </head>
 
 <body>
-    @include('admin.navbar')
-    @include('admin.adminscript')
+    @include('supervisor.supervisorNavBar')
+    @include('supervisor.supervisorscript')
+
     <h1>Update project</h1>
     <br><br />
-    <form action="/edit" method="post">
+    <form action="/editProjectSV" method="post">
         <ul class="form-style-1">
             @csrf
-
             <input type="hidden" name="id" value="{{ $display['id'] }}">
             <br /><br />
-
             <li>
                 <label>Title <span class="required">*</span></label>
-                <input type="text" name="title" value="{{ $display['title'] }}" class="field-long" required>
+                <input type="text" name="title" value="{{ $display['title'] }}" readonly class="field-long">
                 <br /><br />
             </li>
 
             <li>
                 <label>Start Date <span class="required">*</span></label>
-                <input type="date" name="start_date" value="{{ $display['start_date'] }}" class="field-long"
-                    required>
+                <input type="date" name="start_date" value="{{ $display['start_date'] }}" >
                 <br /><br />
             </li>
 
             <li>
                 <label>End Date <span class="required">*</span></label>
-                <input type="date" name="end_date" value="{{ $display['end_date'] }}" class="field-long" required>
+                <input type="date" name="end_date" value="{{ $display['end_date'] }}" >
                 <br /><br>
             </li>
 
             <li>
                 <label>Duration <span class="required">*</span></label>
-                <input type="text" name="duration" value="{{ $display['duration'] }}" class="field-long" required>
+                <input type="text" name="duration" value="{{ $display['duration'] }}" readonly class="field-long">
                 <br /><br />
             </li>
 
             <li>
-                <label for="progress">Project Progress:</label>
-                <select id="progress" name="progress" value="{{ $display['progress'] }}" class="field-long" required>
+                <label for="progress">Project Progress: <span class="required">*</span></label>
+                <select id="progress" name="progress" value="{{ $display['progress'] }}" class="field-select">
                     @if ($display['progress'] == 'milestone1')
                         <option value="milestone1" selected>Milestone 1</option>
                         <option value="milestone2">Milestone 2</option>
@@ -63,8 +61,8 @@
             </li>
 
             <li>
-                <label for="status">Project Status:</label>
-                <select id="status" name="status" class="field-long" required>
+                <label for="status">Project Status:<span class="required">*</span></label>
+                <select id="status" name="status" class="field-select">
                     @if ($display['status'] == 'onTrack')
                         <option value="onTrack" selected>On Track</option>
                         <option value="delayed">Delayed</option>
@@ -90,18 +88,19 @@
             </li>
 
             <li>
-                <label for="student">Student:</label>
-                <select id="student" name="student" class="field-select">
+                <label for="student">Student:<span class="required">*</span></label>
+                <select id="student" name="student" disabled class="field-select">
                     @foreach ($stud as $data)
-                        <option value="{{ $data['id'] }}" {{ $data['id'] == $display['stud'] ? 'selected' : '' }}>
+                        <option disabled value="{{ $data['id'] }}"
+                            {{ $data['id'] == $display['stud'] ? 'selected' : '' }}>
                             {{ $data['name'] }}</option>
                     @endforeach
                 </select><br><br>
             </li>
 
             <li>
-                <label for="Supervisor">Supervisor:</label>
-                <select id="Supervisor" name="Supervisor" class="field-select">
+                <label for="Supervisor">Supervisor:<span class="required">*</span></label>
+                <select id="Supervisor" name="Supervisor" disabled class="field-select">
                     @foreach ($sup as $data)
                         <option value="{{ $data['id'] }}" {{ $data['id'] == $display['sv'] ? 'selected' : '' }}>
                             {{ $data['name'] }}</option>
@@ -110,8 +109,8 @@
             </li>
 
             <li>
-                <label for="Examiner1">Examiner 1:</label>
-                <select id="Examiner1" name="Examiner1" class="field-select">
+                <label for="Examiner1">Examiner 1:<span class="required">*</span></label>
+                <select id="Examiner1" name="Examiner1" disabled class="field-select">
                     @foreach ($exam1 as $data)
                         <option value="{{ $data['id'] }}" {{ $data['id'] == $display['ex1'] ? 'selected' : '' }}>
                             {{ $data['name'] }}</option>
@@ -120,8 +119,8 @@
             </li>
 
             <li>
-                <label for="Examiner2">Examiner 2:</label>
-                <select id="Examiner2" name="Examiner2" class="field-select">
+                <label for="Examiner2">Examiner 2:<span class="required">*</span></label>
+                <select id="Examiner2" name="Examiner2" disabled class="field-select">
                     @foreach ($exam2 as $data)
                         <option value="{{ $data['id'] }}" {{ $data['id'] == $display['ex2'] ? 'selected' : '' }}>
                             {{ $data['name'] }}</option>
@@ -129,10 +128,10 @@
                 </select><br><br>
             </li>
 
-            <button class="button" type=submit>UPDATE</button>
-            <button class="button" type=reset>RESET</button>
-        </ul>
 
+            <button class="button" type=submit>Update</button>
+            <button class="button" onclick="/redirect">Cancel</button>
+        </ul>
     </form>
 </body>
 

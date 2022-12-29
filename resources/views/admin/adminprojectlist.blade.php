@@ -3,6 +3,7 @@
 
   <head>
   @include("admin.admincss")
+  <title>List of project</title>
 </head>
 
 <body>
@@ -12,23 +13,23 @@
 <br><br/>
 <table id="tablecss">
     <tr>
-        <td> Student </td>
-        <td> Title </td>
-        <td> Start Date </td>
-        <td> End Date </td>
-        <td> Duration </td>
-        <td> Progress </td>
-        <td> Status </td>
-        <td> supervisor </td>
-        <td> Examiners 1 </td>
-        <td> Examiners 2 </td>
-        <td> Update </td>
-        <td> Delete </td>
+        <th> Student </th>
+        <th> Title </th>
+        <th> Start Date </th>
+        <th> End Date </th>
+        <th> Duration </th>
+        <th> Progress </th>
+        <th> Status </th>
+        <th> supervisor </th>
+        <th> Examiners 1 </th>
+        <th> Examiners 2 </th>
+        <th> Update </th>
+        <th> Delete </th>
 </tr>
 
 @foreach($data as $display)
 <tr>
-    <td>{{$display->name }}</td>
+    <td>{{$display->student_name }}</td>
     <td>{{$display->title}}</td>
     <td>{{$display->start_date}}</td>
     <td>{{$display->end_date}}</td>
@@ -49,9 +50,9 @@
     @else
         <td>Completed</td>
     @endif
-    <td>{{$display->sv }}</td>
-    <td>{{$display->ex1 }}</td>
-    <td>{{$display->ex2 }}</td>
+    <td>{{$display->sv_name }}</td>
+    <td>{{$display->ex1_name }}</td>
+    <td>{{$display->ex2_name }}</td>
     <td><a href={{"upd/".$display->id}}>Update</a></td>
     <td><a href={{"del/".$display->id}}>Delete</a></td>
 </tr>

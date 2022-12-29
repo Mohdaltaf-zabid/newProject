@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\homeControl;
 use App\Http\Controllers\adminControl;
+use App\Http\Controllers\supervisorControl;
+use App\Http\Controllers\examControl;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,16 @@ Route::get('/listproject', [adminControl::class,'projectList']);
 Route::get('upd/{id}', [adminControl::class,'showProject']);
 Route::post('edit', [adminControl::class,'updateProject']);
 Route::get('del/{id}', [adminControl::class,'deleteProject']);
+
+
+Route::get('/supervisorList', [supervisorControl::class,'projectListSV']);
+Route::get('updSV/{id}', [supervisorControl::class,'showProjectSV']);
+Route::post('editProjectSV', [supervisorControl::class,'updateProjectSV']);
+
+Route::get('/examList', [examControl::class,'projectListExam']);
+
+
+
 
 
 //build in

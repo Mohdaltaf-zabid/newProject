@@ -39,20 +39,21 @@ class adminControl extends Controller
         return redirect('/users');
     }
 
-    function create_project(){
-        $sup  = user::select('id', 'name')
-                    ->where('usertype','=','3')
-                    ->get();
-        $exam1  = user::select('id', 'name')
-                    ->where('usertype','=','2')
-                    ->get();
-        $exam2  = user::select('id', 'name')
-                    ->where('usertype','=','2')
-                    ->get();
-        $stud  = user::select('id', 'name')
-                    ->where('usertype','=','0')
-                    ->get();
-    return view('admin.adminproject', compact("sup","exam1","exam2","stud"));//,"exam1","exam2","stud")
+    function create_project()
+    {
+        $sup = user::select('id', 'name')
+            ->where('usertype', '=', '3')
+            ->get();
+        $exam1 = user::select('id', 'name')
+            ->where('usertype', '=', '2')
+            ->get();
+        $exam2 = user::select('id', 'name')
+            ->where('usertype', '=', '2')
+            ->get();
+        $stud = user::select('id', 'name')
+            ->where('usertype', '=', '0')
+            ->get();
+        return view('admin.adminproject', compact("sup", "exam1", "exam2", "stud")); //,"exam1","exam2","stud")
     }
 
     //function dropDownShow(Request $request){
@@ -62,7 +63,8 @@ class adminControl extends Controller
 
     //project
 
-    function register_project(Request $x){
+    function register_project(Request $x)
+    {
         $project = new project;
 
         $project->id = $x->id;
@@ -80,28 +82,52 @@ class adminControl extends Controller
         return redirect('/listproject');
     }
 
-    function projectList(){
+    function projectList()
+    {
         $data = DB::table('projects')
-            ->join('users as userStd', 'projects.stud', '=', 'userStd.id','left outer')
-            ->select('projects.*','userStd.name')
+            ->leftJoin('users as userStd', 'projects.stud', 'userStd.id')
+            ->leftJoin('users as usersv', 'projects.sv', 'usersv.id')
+            ->leftJoin('users as userex1', 'projects.ex1', 'userex1.id')
+            ->leftJoin('users as userex2', 'projects.ex2', 'userex2.id')
+            ->select('projects.*', 'userStd.name as student_name', 'usersv.name as sv_name', 'userex1.name as ex1_name', 'userex2.name as ex2_name')
             ->get();
 
-        return view('admin.adminprojectlist',array ('data' => $data ));;
+        //dd($data);
+
+        return view('admin.adminprojectlist', array('data' => $data));
+        ;
     }
 
-    function deleteProject($id){
-        $value=project::find($id);
+    function deleteProject($id)
+    {
+        $value = project::find($id);
         //find where is the id
         $value->delete();
         //DB::delete('delete from students where stud_id=?',[$id]);
         return redirect()->back();
     }
-    function showProject($id){
-        $data=project::find($id);
-        return view('admin.adminprojectupdate',['display'=>$data]);
+    function showProject($id)
+    {
+        $display = project::find($id);
+        $sup = user::select('id', 'name')
+            ->where('usertype', '=', '3')
+            ->get();
+        $exam1 = user::select('id', 'name')
+            ->where('usertype', '=', '2')
+            ->get();
+        $exam2 = user::select('id', 'name')
+            ->where('usertype', '=', '2')
+            ->get();
+        $stud = user::select('id', 'name')
+            ->where('usertype', '=', '0')
+            ->get();
+
+        //dd($display);
+        return view('admin.adminprojectupdate', compact("display","sup","exam1","exam2","stud"));
     }
-    function updateProject (Request $req){
-        $data=project::find($req->id);
+    function updateProject(Request $req)
+    {
+        $data = project::find($req->id);
 
         $data->title = $req->title;
         $data->start_date = $req->start_date;
@@ -109,9 +135,13 @@ class adminControl extends Controller
         $data->duration = $req->duration;
         $data->progress = $req->progress;
         $data->status = $req->status;
+        $data->stud = $req->student;
+        $data->sv = $req->Supervisor;
+        $data->ex1 = $req->Examiner1;
+        $data->ex2 = $req->Examiner2;
 
         $data->save();
         return redirect('/listproject');
     }
-    
+
 }
